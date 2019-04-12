@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using Edura.WebUI.Repository.Abstract;
 using Edura.WebUI.Repository.Concrete.EntityFramework;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -22,6 +23,7 @@ namespace Edura.WebUI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<EduraContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddTransient<IProductRepository, EfProductRepository>();
             services.AddMvc().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_2);
         }
 
@@ -49,6 +51,8 @@ namespace Edura.WebUI
                     Directory.GetCurrentDirectory(), "node_modules")),
                 RequestPath = "/modules"
             });
+
+            SeedData.EnsurePopulated(app);
 
         }
     }
