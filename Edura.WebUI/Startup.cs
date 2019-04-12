@@ -23,7 +23,12 @@ namespace Edura.WebUI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<EduraContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddTransient<IProductRepository, EfProductRepository>();
+            services.AddTransient<ICategoryRepository, EfCategoryRepository>();
+            services.AddTransient<IOrderRepository, EfOrderRepository>();
+            services.AddTransient<IUnitOfWork, EfUnitOfWork>();
+
             services.AddMvc().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_2);
         }
 
