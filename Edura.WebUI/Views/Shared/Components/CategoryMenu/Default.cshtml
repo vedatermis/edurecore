@@ -1,0 +1,13 @@
+﻿@model IEnumerable<Edura.WebUI.Models.CategoryModel>
+
+<div class="widget">
+    <h4>CATEGORIES</h4>
+    <ul class="list-unstyled link-list">
+        
+        @foreach (var category in Model)
+        {
+            <li><i class="fa fa-angle-right fa-fw" aria-hidden="true"></i> <a href="#">@category.CategoryName <span class="pull-right">(@category.Count)</span></a></li>
+
+        }
+    </ul>
+</div>

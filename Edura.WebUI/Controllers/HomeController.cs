@@ -1,4 +1,5 @@
-﻿using Edura.WebUI.Entity;
+﻿using System.Linq;
+using Edura.WebUI.Entity;
 using Edura.WebUI.Repository.Abstract;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,7 +19,7 @@ namespace Edura.WebUI.Controllers
 
         public IActionResult Index()
         {
-            return View(_unitOfWork.Products.GetAll());
+            return View(_unitOfWork.Products.GetAll().Where(i => i.IsApproved && i.IsHome).ToList());
         }
 
         public IActionResult Create()

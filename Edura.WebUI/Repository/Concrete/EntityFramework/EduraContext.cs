@@ -10,7 +10,7 @@ namespace Edura.WebUI.Repository.Concrete.EntityFramework
 
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
-        public DbSet<Order> Orders { get; set; }
+        //public DbSet<Order> Orders { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
