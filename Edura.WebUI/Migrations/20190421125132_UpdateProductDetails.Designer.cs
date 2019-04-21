@@ -4,14 +4,16 @@ using Edura.WebUI.Repository.Concrete.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Edura.WebUI.Migrations
 {
     [DbContext(typeof(EduraContext))]
-    partial class EduraContextModelSnapshot : ModelSnapshot
+    [Migration("20190421125132_UpdateProductDetails")]
+    partial class UpdateProductDetails
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
