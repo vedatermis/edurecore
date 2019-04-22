@@ -6,7 +6,10 @@
         
         @foreach (var category in Model)
         {
-            <li><i class="fa fa-angle-right fa-fw" aria-hidden="true"></i> <a href="#">@category.CategoryName <span class="pull-right">(@category.Count)</span></a></li>
+            <li><i class="fa fa-angle-right fa-fw" aria-hidden="true"></i> <a asp-controller="Product" asp-action="List" asp-route-category="@category.CategoryName">
+                @category.CategoryName 
+                <span class="pull-right">(@category.Count)</span>
+            </a></li>
 
         }
     </ul>
