@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using Edura.WebUI.Repository.Abstract;
 using Edura.WebUI.Repository.Concrete.EntityFramework;
 using Microsoft.AspNetCore.Builder;
@@ -29,7 +30,15 @@ namespace Edura.WebUI
             //services.AddTransient<IOrderRepository, EfOrderRepository>();
             services.AddTransient<IUnitOfWork, EfUnitOfWork>();
 
-            services.AddMvc().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_2);
+            services.AddMemoryCache();
+            services.AddSession(options => {
+                options.IdleTimeout = TimeSpan.FromMinutes(10);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
+
+            services.AddMvc();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,15 +57,7 @@ namespace Edura.WebUI
                     defaults: new { controller = "Product", action = "List" }
                 );
             });
-
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}"
-                );
-            });
-
+            
             app.UseStatusCodePages();
             app.UseStaticFiles();
             app.UseStaticFiles(new StaticFileOptions
@@ -64,6 +65,16 @@ namespace Edura.WebUI
                 FileProvider = new PhysicalFileProvider(Path.Combine(
                     Directory.GetCurrentDirectory(), "node_modules")),
                 RequestPath = "/modules"
+            });
+
+            app.UseSession();
+            
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}/{id?}"
+                );
             });
 
             SeedData.EnsurePopulated(app);
