@@ -1,5 +1,4 @@
-﻿using System.Reflection.PortableExecutable;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 
 namespace Edura.WebUI.Infrastructure
@@ -15,7 +14,7 @@ namespace Edura.WebUI.Infrastructure
         {
             var data = session.GetString(key);
 
-            return data == null ? default : JsonConvert.DeserializeObject<T>(data);
+            return data == null ? default(T) : JsonConvert.DeserializeObject<T>(data);
         }
     }
 }
