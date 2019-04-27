@@ -85,6 +85,7 @@ namespace Edura.WebUI
             });
 
             SeedData.EnsurePopulated(app);
+
             SeedIdentity.CreateIdentityUsers(app.ApplicationServices, Configuration).Wait();
 
         }
