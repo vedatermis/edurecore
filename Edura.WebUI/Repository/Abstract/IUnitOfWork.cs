@@ -6,6 +6,7 @@ namespace Edura.WebUI.Repository.Abstract
     {
         IProductRepository Products { get; }
         ICategoryRepository Categories { get; }
+        IOrderRepository Orders { get; }
 
         int SaveChanges();
     }

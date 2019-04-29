@@ -14,10 +14,12 @@ namespace Edura.WebUI.Repository.Concrete.EntityFramework
 
         private IProductRepository _products;
         private ICategoryRepository _categories;
+        private IOrderRepository _orders;
 
         public IProductRepository Products => _products ?? (_products = new EfProductRepository(_dbContext));
 
         public ICategoryRepository Categories => _categories ?? (_categories = new EfCategoryRepository(_dbContext));
+        public IOrderRepository Orders => _orders ?? (_orders = new EfOrderRepository(_dbContext));
 
         public int SaveChanges()
         {

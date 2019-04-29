@@ -34,6 +34,7 @@ namespace Edura.WebUI
 
             services.AddTransient<IProductRepository, EfProductRepository>();
             services.AddTransient<ICategoryRepository, EfCategoryRepository>();
+            services.AddTransient<IOrderRepository, EfOrderRepository>();
             services.AddTransient<IUnitOfWork, EfUnitOfWork>();
 
             services.AddMemoryCache();
