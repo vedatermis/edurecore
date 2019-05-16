@@ -6,7 +6,9 @@ using Edura.WebUI.Entity;
 using Edura.WebUI.Models;
 using Edura.WebUI.Repository.Abstract;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity.UI.V3.Pages.Internal.Account.Manage;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Edura.WebUI.Controllers
 {
@@ -22,6 +24,60 @@ namespace Edura.WebUI.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+
+        [HttpGet]
+        public IActionResult EditCategory(int id)
+        {
+            var enity = _unitOfWork.Categories.GetAll()
+                .Include(i => i.ProductCategories)
+                .ThenInclude(i => i.Product)
+                .Where(i => i.Id == id)
+                .Select(s => new AdminEditCategoryModel
+                {
+                    CategoryId = s.Id,
+                    CategoryName = s.CategoryName,
+                    Products = s.ProductCategories.Select(a => new AdminEditCategoryProduct()
+                    {
+                        ProductId = a.ProductId,
+                        ProductName = a.Product.ProductName,
+                        Image = a.Product.Image,
+                        IsApproved = a.Product.IsApproved,
+                        IsFeatured = a.Product.IsFeatured,
+                        IsHome = a.Product.IsHome
+
+                    }).ToList()
+                }).FirstOrDefault();
+
+            return View(enity);
+        }
+
+        [HttpPost]
+        public IActionResult EditCategory(Category entity)
+        {
+            if (ModelState.IsValid)
+            {
+                _unitOfWork.Categories.Edit(entity);
+                _unitOfWork.SaveChanges();
+
+                return RedirectToAction("CatalogList");
+            }
+
+            return View("Error");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult RemoveFromCategory(int ProductId, int CategoryId)
+        {
+            if (ModelState.IsValid)
+            {
+                _unitOfWork.Categories.RemoveFromCategory(ProductId, CategoryId);
+                _unitOfWork.SaveChanges();
+                return Ok();
+            }
+
+            return BadRequest();
         }
 
         public IActionResult CatalogList()

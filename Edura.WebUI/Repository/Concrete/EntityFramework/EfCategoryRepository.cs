@@ -3,10 +3,11 @@ using System.Linq;
 using Edura.WebUI.Entity;
 using Edura.WebUI.Models;
 using Edura.WebUI.Repository.Abstract;
+using Microsoft.EntityFrameworkCore;
 
 namespace Edura.WebUI.Repository.Concrete.EntityFramework
 {
-    public class EfCategoryRepository: EfGenericRepository<Category>, ICategoryRepository
+    public class EfCategoryRepository : EfGenericRepository<Category>, ICategoryRepository
     {
         public EfCategoryRepository(EduraContext context) : base(context) { }
 
@@ -25,6 +26,12 @@ namespace Edura.WebUI.Repository.Concrete.EntityFramework
                 CategoryName = s.CategoryName,
                 Count = s.ProductCategories.Count
             });
+        }
+
+        public void RemoveFromCategory(int ProductId, int CategoryId)
+        {
+            var cmd = $"delete from ProductCategory where ProductId = {ProductId} and CategoryId = {CategoryId}";
+            Context.Database.ExecuteSqlCommand(cmd);
         }
     }
 }
